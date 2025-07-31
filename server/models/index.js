@@ -33,9 +33,15 @@ db.TvShow.belongsTo(db.User, { foreignKey: 'userId' });
 
 
 
-db.sequelize.sync({force:false})
-.then(()=>{
-    console.log("The re sync done");
-})
+db.sequelize.sync({ force: false })
+  .then(() => {
+    console.log("✅ Database sync complete");
+  })
+  .catch((error) => {
+  console.error("❌ Sequelize sync failed:");
+    console.error(error); // print full stack trace
+    console.error("Stack:", error.stack)
+  });
+
 
 module.exports = db;
