@@ -34,12 +34,12 @@ exports.register = async (req, res) => {
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email },
       JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '30d' }
     );
     const { password: _pw, ...safeUser } = newUser.get({ plain: true });
     res.status(201).json({
       message: 'User registered successfully',
-      data:{token,safeUser}
+      data:{safeUser}
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -59,9 +59,9 @@ exports.login = async (req, res) => {
 
     if (!match) return res.status(400).json({ message: 'Invalid email or password' });
 
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '5d' });
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '30d' });
     const { password: _pw, ...safeUser } = user.get({ plain: true });
-    res.json({ token,  data:{token,safeUser} });
+    res.json({ data:{token,safeUser} });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
