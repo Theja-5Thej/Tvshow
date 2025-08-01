@@ -2,12 +2,25 @@ const {TvShow} = require('../models');
 
 
 exports.getAllTvShows = async (req, res) => {
-  const shows = await TvShow.findAll({
-    where: { userId: req.userId },
-    order: [['createdAt', 'DESC']],
-  });
-  res.json(shows);
+  const userId = req.userId;
+  const limit = parseInt(req.query.limit) || 15;
+  const offset = parseInt(req.query.offset) || 0;
+
+  try {
+    const shows = await TvShow.findAll({
+      where: { userId },
+      limit,
+      offset,
+      order: [['createdAt', 'DESC']],
+    });
+
+    res.json(shows);
+  } catch (error) {
+    console.error('Error fetching shows:', error);
+    res.status(500).json({ error: 'Failed to fetch shows' });
+  }
 };
+
 
 exports.createTvShow = async (req, res) => {
   const newShow = await TvShow.create({
