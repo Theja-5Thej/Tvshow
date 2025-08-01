@@ -39,7 +39,7 @@ exports.register = async (req, res) => {
     const { password: _pw, ...safeUser } = newUser.get({ plain: true });
     res.status(201).json({
       message: 'User registered successfully',
-      data:{safeUser}
+      data:{safeUser,token}
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
